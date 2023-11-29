@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:target_test/presentation/ui/pages/home_page/home_page.dart';
+import 'package:target_test/presentation/ui/pages/home_page/login_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,12 +11,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
+      title: 'Target Test',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const HomePage(),
+          // colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          ),
+      home: const LoginPage(),
     );
   }
 }
