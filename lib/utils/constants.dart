@@ -7,4 +7,5 @@ class ProjectColors {
   Color darkBlue = const Color.fromRGBO(34, 38, 54, 1);
   Color green = const Color.fromRGBO(71, 189, 112, 1);
   Color white = Colors.white;
+  Color darkGrey = Colors.grey[700]!;
 }

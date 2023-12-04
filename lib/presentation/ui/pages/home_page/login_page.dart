@@ -1,6 +1,10 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:target_test/presentation/ui/controller/login_page_controller.dart';
+import 'package:target_test/presentation/ui/pages/home_page/components/custom_alert_dialog.dart';
+import 'package:target_test/presentation/ui/pages/home_page/components/login_button_component.dart';
+import 'package:target_test/presentation/ui/pages/home_page/components/login_textform_component.dart';
 import 'package:target_test/utils/constants.dart';
 
 class LoginPage extends StatefulWidget {
@@ -11,73 +15,91 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final LoginPageController _loginPageController = LoginPageController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Container(
-          width: double.infinity,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  ProjectColors().darkBlue,
-                  ProjectColors().navyBlue,
-                  ProjectColors().blue,
-                ]),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                'Usuário',
-                style: TextStyle(color: ProjectColors().white),
-              ),
-              Container(
-                margin: const EdgeInsets.symmetric(vertical: 10),
-                width: 200,
-                height: 40,
-                color: ProjectColors().white,
-              ),
-              Text(
-                'Senha',
-                style: TextStyle(color: ProjectColors().white),
-              ),
-              Container(
-                margin: const EdgeInsets.symmetric(vertical: 10),
-                width: 200,
-                height: 40,
-                color: ProjectColors().white,
-              ),
-              ElevatedButton(
-                style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStatePropertyAll(ProjectColors().green)),
-                onPressed: () {
-                  log("Apertou politicas");
-                },
-                child: Text(
-                  'Entrar',
-                  style: TextStyle(color: ProjectColors().white),
+      body: SingleChildScrollView(
+        physics: const ClampingScrollPhysics(),
+        child: SafeArea(
+          child: Container(
+            height: MediaQuery.sizeOf(context).height - 24,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    ProjectColors().darkBlue,
+                    ProjectColors().navyBlue,
+                    ProjectColors().blue,
+                  ]),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Column(
+                  children: [
+                    LoginTextFormComponents(
+                      label: 'Usuário',
+                      prefixIcon: Icons.person,
+                      controller: _loginPageController.userController,
+                    ),
+                    const SizedBox(height: 10),
+                    LoginTextFormComponents(
+                      label: 'Senha',
+                      prefixIcon: Icons.lock,
+                      controller: _loginPageController.passwordController,
+                    ),
+                    const SizedBox(height: 20),
+                    LoginButtonComponent(callback: () async {
+                      String message = validateFields();
+                      if (message != '') {
+                        await CustomAlertDialog().alertdialog(context, message);
+                      } else {
+                        log('Próxima Página');
+                      }
+                    }),
+                  ],
                 ),
-              ),
-              const SizedBox(
-                height: 100,
-              ),
-              TextButton(
-                child: Text(
-                  'Política de Privacidade',
-                  style: TextStyle(color: ProjectColors().white),
-                ),
-                onPressed: () {
-                  log("Apertou politicas");
-                },
-              ),
-            ],
+                Column(
+                  children: [
+                    TextButton(
+                      child: Text(
+                        'Política de Privacidade',
+                        style: TextStyle(color: ProjectColors().white),
+                      ),
+                      onPressed: () {
+                        log("Apertou politicas");
+                      },
+                    ),
+                  ],
+                )
+              ],
+            ),
           ),
         ),
       ),
     );
+  }
+
+  String validateFields() {
+    if (_loginPageController.userController.text.isEmpty ||
+        _loginPageController.passwordController.text.isEmpty) {
+      return 'O nome de usuário e senha não podem ser vazios';
+    }
+
+    if (_loginPageController.userController.text.endsWith(' ')) {
+      return 'O nome de usuário não pode terminar com espaço';
+    }
+    if (_loginPageController.passwordController.text.endsWith(' ')) {
+      return 'O campo de senha não pode terminar com espaço';
+    }
+    if (_loginPageController.passwordController.text.length <= 1) {
+      return 'O campo de senha não pode ter menos de 2 caracteres';
+    }
+
+    return '';
   }
 }
