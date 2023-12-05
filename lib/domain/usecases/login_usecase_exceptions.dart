@@ -1,33 +1,39 @@
 abstract class ILoginUsecaseExceptions implements Exception {
-  ILoginUsecaseExceptions([String message = "Falha ao tentar fazer login"]);
+  final String message;
+  ILoginUsecaseExceptions([this.message = "Falha ao tentar fazer login"]);
 }
 
 class EmptyUsernameCaseException extends ILoginUsecaseExceptions {
   @override
   EmptyUsernameCaseException(
-      [String message = "O campo nome não pode ser vazio"]);
+      [String message = "O campo nome não pode ser vazio"])
+      : super(message);
 }
 
-class EmptyCaseException extends ILoginUsecaseExceptions {
+class EmptyUseCaseException extends ILoginUsecaseExceptions {
   @override
-  EmptyCaseException(
-      [String message = "O campo nome e senha não podem ser vazios"]);
+  EmptyUseCaseException(
+      [String message = "O campo nome e senha não podem ser vazios"])
+      : super(message);
 }
 
-class UserEndsWithCaseException extends ILoginUsecaseExceptions {
+class UserEndsWithUseCaseException extends ILoginUsecaseExceptions {
   @override
-  UserEndsWithCaseException(
-      [String message = 'O nome de usuário não pode terminar com espaço']);
+  UserEndsWithUseCaseException(
+      [String message = 'O nome de usuário não pode terminar com espaço'])
+      : super(message);
 }
 
-class PasswordEndsWithCaseException extends ILoginUsecaseExceptions {
+class PasswordEndsWithUseCaseException extends ILoginUsecaseExceptions {
   @override
-  PasswordEndsWithCaseException(
-      [String message = 'O campo de senha não pode terminar com espaço']);
+  PasswordEndsWithUseCaseException(
+      [String message = 'O campo de senha não pode terminar com espaço'])
+      : super(message);
 }
 
-class PasswordSizeCaseException extends ILoginUsecaseExceptions {
+class PasswordSizeUseCaseException extends ILoginUsecaseExceptions {
   @override
-  PasswordSizeCaseException(
-      [String message = 'O campo de senha não pode ter menos de 2 caracteres']);
+  PasswordSizeUseCaseException(
+      [String message = 'O campo de senha não pode ter menos de 2 caracteres'])
+      : super(message);
 }

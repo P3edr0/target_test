@@ -16,7 +16,10 @@ class CustomAlertDialog {
             color: ProjectColors().navyBlue,
             size: 50,
           ),
-          content: Text(message),
+          content: Text(
+            message,
+            textAlign: TextAlign.center,
+          ),
           actions: <Widget>[
             LoginButtonComponent(
               callback: () => Navigator.of(context).pop(),
