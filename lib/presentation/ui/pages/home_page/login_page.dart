@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:target_test/presentation/ui/controller/login_page_controller.dart';
 import 'package:target_test/presentation/ui/pages/home_page/components/custom_alert_dialog.dart';
 import 'package:target_test/presentation/ui/pages/home_page/components/login_button_component.dart';
@@ -51,6 +52,20 @@ class _LoginPageState extends State<LoginPage> {
                       label: 'Senha',
                       prefixIcon: Icons.lock,
                       controller: _loginPageController.passwordController,
+                      inputAction: TextInputAction.done,
+                      onSubmitt: (_) async {
+                        String message = validateFields();
+                        if (message != '') {
+                          await CustomAlertDialog()
+                              .alertdialog(context, message);
+                        } else {
+                          log('Próxima Página');
+                        }
+                      },
+                      inputFormaters: [
+                        FilteringTextInputFormatter.allow(
+                            RegExp(r'[a-zA-Z0-9]'))
+                      ],
                     ),
                     const SizedBox(height: 20),
                     LoginButtonComponent(callback: () async {

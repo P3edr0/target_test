@@ -3,17 +3,20 @@ import 'package:flutter/services.dart';
 import 'package:target_test/utils/constants.dart';
 
 class LoginTextFormComponents extends StatefulWidget {
-  const LoginTextFormComponents({
-    super.key,
-    required this.label,
-    required this.prefixIcon,
-    required this.controller,
-    this.inputFormaters = [],
-  });
+  const LoginTextFormComponents(
+      {super.key,
+      required this.label,
+      required this.prefixIcon,
+      required this.controller,
+      this.inputFormaters,
+      this.inputAction,
+      this.onSubmitt});
   final String label;
   final IconData prefixIcon;
   final TextEditingController controller;
-  final List<TextInputFormatter> inputFormaters;
+  final List<TextInputFormatter>? inputFormaters;
+  final TextInputAction? inputAction;
+  final Function(String)? onSubmitt;
 
   @override
   State<LoginTextFormComponents> createState() =>
@@ -49,10 +52,9 @@ class _LoginTextFormComponentsState extends State<LoginTextFormComponents> {
             key: _formKey,
             child: TextFormField(
               controller: widget.controller,
-              textInputAction: TextInputAction.next,
-              inputFormatters: [
-                FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9]')),
-              ],
+              onFieldSubmitted: widget.onSubmitt,
+              textInputAction: widget.inputAction ?? TextInputAction.next,
+              inputFormatters: widget.inputFormaters ?? [],
               onChanged: (value) {
                 if (value.length == 20) {
                   saved = value;
