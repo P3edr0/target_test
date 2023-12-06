@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:target_test/domain/usecases/login_usecases.dart';
-import 'package:target_test/presentation/ui/pages/home_page/components/custom_alert_dialog.dart';
+import 'package:target_test/presentation/ui/components/custom_alert_dialog.dart';
 import 'package:target_test/presentation/ui/pages/info_page/info_page.dart';
 import 'package:target_test/utils/constants.dart';
 import 'package:url_launcher/url_launcher_string.dart';

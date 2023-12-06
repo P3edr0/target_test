@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:target_test/presentation/ui/pages/home_page/components/login_button_component.dart';
+import 'package:target_test/presentation/ui/components/login_button_component.dart';
 import 'package:target_test/utils/constants.dart';
 
 class CustomAlertDialog {
