@@ -40,6 +40,7 @@ dependencies:
   mobx_codegen: ^2.4.0
   build_runner: ^2.4.7
   dartz: ^0.10.1
+  url_launcher: ^6.2.1
 
 dev_dependencies:
   flutter_test:

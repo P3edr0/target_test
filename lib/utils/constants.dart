@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+const String acessToken = "Target Sistemas Token";
+
 class ProjectColors {
   Color lightBlue = const Color.fromRGBO(206, 227, 225, 1);
   Color blue = const Color.fromRGBO(132, 180, 188, 1);

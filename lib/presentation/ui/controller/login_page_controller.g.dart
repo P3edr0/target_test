@@ -41,6 +41,14 @@ mixin _$LoginPageController on LoginPageControllerBase, Store {
     });
   }
 
+  late final _$abrirLinkAsyncAction =
+      AsyncAction('LoginPageControllerBase.abrirLink', context: context);
+
+  @override
+  Future<void> abrirLink(String url, BuildContext context) {
+    return _$abrirLinkAsyncAction.run(() => super.abrirLink(url, context));
+  }
+
   late final _$LoginPageControllerBaseActionController =
       ActionController(name: 'LoginPageControllerBase', context: context);
 

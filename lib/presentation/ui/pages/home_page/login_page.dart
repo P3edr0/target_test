@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:target_test/presentation/ui/controller/login_page_controller.dart';
@@ -70,8 +68,9 @@ class _LoginPageState extends State<LoginPage> {
                         'Política de Privacidade',
                         style: TextStyle(color: ProjectColors().white),
                       ),
-                      onPressed: () {
-                        log("Apertou politicas");
+                      onPressed: () async {
+                        _loginPageController.abrirLink(
+                            'https://www.google.com.br/', context);
                       },
                     ),
                   ],
@@ -82,24 +81,5 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
-  }
-
-  String validateFields() {
-    if (_loginPageController.userController.text.isEmpty ||
-        _loginPageController.passwordController.text.isEmpty) {
-      return 'O nome de usuário e senha não podem ser vazios';
-    }
-
-    if (_loginPageController.userController.text.endsWith(' ')) {
-      return 'O nome de usuário não pode terminar com espaço';
-    }
-    if (_loginPageController.passwordController.text.endsWith(' ')) {
-      return 'O campo de senha não pode terminar com espaço';
-    }
-    if (_loginPageController.passwordController.text.length <= 1) {
-      return 'O campo de senha não pode ter menos de 2 caracteres';
-    }
-
-    return '';
   }
 }
