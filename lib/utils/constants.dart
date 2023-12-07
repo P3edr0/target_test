@@ -10,4 +10,5 @@ class ProjectColors {
   Color green = const Color.fromRGBO(71, 189, 112, 1);
   Color white = Colors.white;
   Color darkGrey = Colors.grey[700]!;
+  Color red = Colors.red;
 }

@@ -6,13 +6,10 @@ import 'package:target_test/presentation/ui/pages/info_page/info_page.dart';
 import 'package:target_test/utils/constants.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
-// Include generated file
 part 'login_page_controller.g.dart';
 
-// This is the class used by rest of your codebase
 class LoginPageController = LoginPageControllerBase with _$LoginPageController;
 
-// The store-class
 abstract class LoginPageControllerBase with Store {
   LoginPageControllerBase();
 
