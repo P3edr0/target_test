@@ -25,7 +25,12 @@ abstract class LoginPageControllerBase with Store {
         LoginUseCase().call(userController.text, passwordController.text);
     response.fold(
       (l) async {
-        await CustomAlertDialog().alertdialog(context, l.message);
+        await CustomAlertDialog().alertdialog(
+          context,
+          l.message,
+          'Sair',
+          () => Navigator.of(context).pop(),
+        );
       },
       (r) async {
         if (r == acessToken) {
@@ -34,8 +39,12 @@ abstract class LoginPageControllerBase with Store {
             MaterialPageRoute(builder: (context) => const InfoPage()),
           );
         } else {
-          await CustomAlertDialog()
-              .alertdialog(context, 'Credenciais Inválidas');
+          await CustomAlertDialog().alertdialog(
+            context,
+            'Credenciais Inválidas',
+            'Sair',
+            () => Navigator.of(context).pop(),
+          );
         }
       },
     );
@@ -48,12 +57,21 @@ abstract class LoginPageControllerBase with Store {
         await launchUrlString(url);
       } else {
         if (!context.mounted) return;
-        await CustomAlertDialog()
-            .alertdialog(context, 'Não foi possível abrir o link: $url');
+        await CustomAlertDialog().alertdialog(
+          context,
+          'Não foi possível abrir o link: $url',
+          'Sair',
+          () => Navigator.of(context).pop(),
+        );
       }
     } else {
       if (!context.mounted) return;
-      await CustomAlertDialog().alertdialog(context, 'URL inválida: $url');
+      await CustomAlertDialog().alertdialog(
+        context,
+        'URL inválida: $url',
+        'Sair',
+        () => Navigator.of(context).pop(),
+      );
     }
   }
 }

@@ -1,7 +1,10 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:target_test/presentation/ui/components/custom_alert_dialog.dart';
 import 'package:target_test/presentation/ui/controller/info_page_controller.dart';
+import 'package:target_test/presentation/ui/pages/info_page/components/custom_edit_element_dialog.dart';
 import 'package:target_test/utils/constants.dart';
 
 class InfoPage extends StatefulWidget {
@@ -38,13 +41,14 @@ class _InfoPageState extends State<InfoPage> {
               children: <Widget>[
                 Column(children: [
                   Container(
-                      width: 250,
-                      height: 300,
-                      decoration: BoxDecoration(
-                          color: ProjectColors().white,
-                          borderRadius: BorderRadius.circular(5)),
-                      child: ListView.separated(
-                        itemCount: 10,
+                    width: 250,
+                    height: 300,
+                    decoration: BoxDecoration(
+                        color: ProjectColors().white,
+                        borderRadius: BorderRadius.circular(5)),
+                    child: Observer(
+                      builder: (_) => ListView.separated(
+                        itemCount: _infoPageController.infoList.length,
                         physics: const ClampingScrollPhysics(),
                         separatorBuilder: (_, values) => Container(
                           color: ProjectColors().darkGrey.withOpacity(0.5),
@@ -58,16 +62,20 @@ class _InfoPageState extends State<InfoPage> {
                                 alignment: Alignment.center,
                                 width: 180,
                                 height: 50,
-                                child: const Text(
-                                  'Texto digitado 1',
-                                  style: TextStyle(
+                                child: Text(
+                                  _infoPageController.infoList[index],
+                                  style: const TextStyle(
                                     fontWeight: FontWeight.bold,
                                   ),
                                   textAlign: TextAlign.center,
                                 )),
                             InkWell(
                                 onTap: () {
-                                  log('Editar $index');
+                                  CustomEditElementDialog().editDialog(
+                                      context,
+                                      index,
+                                      _infoPageController.infoList[index],
+                                      _infoPageController);
                                 },
                                 child: const Icon(Icons.edit)),
                             const SizedBox(
@@ -75,6 +83,12 @@ class _InfoPageState extends State<InfoPage> {
                             ),
                             InkWell(
                                 onTap: () {
+                                  CustomAlertDialog().alertdialog(
+                                      context,
+                                      'Deseja remover o elemento\n "${_infoPageController.infoList[index]}" ?',
+                                      'Remover',
+                                      () => _infoPageController.removeItem(
+                                          context, index));
                                   log('Deletar $index');
                                 },
                                 child: Icon(
@@ -83,7 +97,9 @@ class _InfoPageState extends State<InfoPage> {
                                 ))
                           ],
                         ),
-                      )),
+                      ),
+                    ),
+                  ),
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 5),
                     margin: const EdgeInsets.only(top: 40, bottom: 80),
@@ -99,7 +115,25 @@ class _InfoPageState extends State<InfoPage> {
                         ),
                         textAlign: TextAlign.center,
                         controller: _infoPageController.infoController,
-                        onFieldSubmitted: (value) {},
+                        onFieldSubmitted: (value) {
+                          if (value == '') {
+                            CustomAlertDialog().alertdialog(
+                                context,
+                                'O campo de texto não pode ser vazio',
+                                'Sair',
+                                () => Navigator.of(context).pop());
+                          } else {
+                            _infoPageController.infoList.insert(0, value);
+
+                            final snackbar = SnackBar(
+                              backgroundColor: ProjectColors().darkGreen,
+                              content: const Text('Item inserido com sucesso.'),
+                            );
+                            _infoPageController.infoController.clear();
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackbar);
+                          }
+                        },
                         textInputAction: TextInputAction.done,
                         decoration: const InputDecoration(
                             hintText: "Digite Seu Texto",

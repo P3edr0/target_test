@@ -3,7 +3,8 @@ import 'package:target_test/presentation/ui/components/login_button_component.da
 import 'package:target_test/utils/constants.dart';
 
 class CustomAlertDialog {
-  Future<void> alertdialog(BuildContext context, String message) {
+  Future<void> alertdialog(BuildContext context, String message,
+      String buttonLabel, Function() callback) {
     return showDialog<void>(
       context: context,
       builder: (
@@ -22,8 +23,8 @@ class CustomAlertDialog {
           ),
           actions: <Widget>[
             LoginButtonComponent(
-              callback: () => Navigator.of(context).pop(),
-              label: 'Sair',
+              callback: callback,
+              label: buttonLabel,
               colorButton: ProjectColors().navyBlue,
             ),
           ],

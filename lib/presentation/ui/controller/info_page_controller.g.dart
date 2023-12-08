@@ -25,6 +25,22 @@ mixin _$InfoPageController on InfoPageControllerBase, Store {
     });
   }
 
+  late final _$infoListAtom =
+      Atom(name: 'InfoPageControllerBase.infoList', context: context);
+
+  @override
+  ObservableList<String> get infoList {
+    _$infoListAtom.reportRead();
+    return super.infoList;
+  }
+
+  @override
+  set infoList(ObservableList<String> value) {
+    _$infoListAtom.reportWrite(value, super.infoList, () {
+      super.infoList = value;
+    });
+  }
+
   late final _$abrirLinkAsyncAction =
       AsyncAction('InfoPageControllerBase.abrirLink', context: context);
 
@@ -33,10 +49,25 @@ mixin _$InfoPageController on InfoPageControllerBase, Store {
     return _$abrirLinkAsyncAction.run(() => super.abrirLink(url, context));
   }
 
+  late final _$InfoPageControllerBaseActionController =
+      ActionController(name: 'InfoPageControllerBase', context: context);
+
+  @override
+  dynamic removeItem(BuildContext context, int index) {
+    final _$actionInfo = _$InfoPageControllerBaseActionController.startAction(
+        name: 'InfoPageControllerBase.removeItem');
+    try {
+      return super.removeItem(context, index);
+    } finally {
+      _$InfoPageControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
   @override
   String toString() {
     return '''
-infoController: ${infoController}
+infoController: ${infoController},
+infoList: ${infoList}
     ''';
   }
 }
