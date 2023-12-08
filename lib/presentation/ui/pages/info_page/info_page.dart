@@ -1,5 +1,7 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
-import 'package:target_test/presentation/ui/controller/login_page_controller.dart';
+import 'package:target_test/presentation/ui/controller/info_page_controller.dart';
 import 'package:target_test/utils/constants.dart';
 
 class InfoPage extends StatefulWidget {
@@ -10,7 +12,7 @@ class InfoPage extends StatefulWidget {
 }
 
 class _InfoPageState extends State<InfoPage> {
-  final LoginPageController _loginPageController = LoginPageController();
+  final InfoPageController _infoPageController = InfoPageController();
 
   @override
   Widget build(BuildContext context) {
@@ -38,9 +40,12 @@ class _InfoPageState extends State<InfoPage> {
                   Container(
                       width: 250,
                       height: 300,
-                      color: ProjectColors().white,
+                      decoration: BoxDecoration(
+                          color: ProjectColors().white,
+                          borderRadius: BorderRadius.circular(5)),
                       child: ListView.separated(
                         itemCount: 10,
+                        physics: const ClampingScrollPhysics(),
                         separatorBuilder: (_, values) => Container(
                           color: ProjectColors().darkGrey.withOpacity(0.5),
                           width: 220,
@@ -49,17 +54,30 @@ class _InfoPageState extends State<InfoPage> {
                         itemBuilder: (context, index) => Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const SizedBox(
-                                width: 140,
-                                child: Text(
+                            Container(
+                                alignment: Alignment.center,
+                                width: 180,
+                                height: 50,
+                                child: const Text(
                                   'Texto digitado 1',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                   textAlign: TextAlign.center,
                                 )),
-                            IconButton(
-                                onPressed: () {}, icon: const Icon(Icons.edit)),
-                            IconButton(
-                                onPressed: () {},
-                                icon: Icon(
+                            InkWell(
+                                onTap: () {
+                                  log('Editar $index');
+                                },
+                                child: const Icon(Icons.edit)),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            InkWell(
+                                onTap: () {
+                                  log('Deletar $index');
+                                },
+                                child: Icon(
                                   Icons.cancel_rounded,
                                   color: ProjectColors().red,
                                 ))
@@ -67,17 +85,40 @@ class _InfoPageState extends State<InfoPage> {
                         ),
                       )),
                   Container(
-                      margin: const EdgeInsets.only(top: 40, bottom: 80),
-                      width: 250,
-                      height: 50,
-                      color: ProjectColors().white),
+                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                    margin: const EdgeInsets.only(top: 40, bottom: 80),
+                    width: 250,
+                    height: 50,
+                    decoration: BoxDecoration(
+                        color: ProjectColors().white,
+                        borderRadius: BorderRadius.circular(5)),
+                    child: Form(
+                      child: TextFormField(
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
+                        controller: _infoPageController.infoController,
+                        onFieldSubmitted: (value) {},
+                        textInputAction: TextInputAction.done,
+                        decoration: const InputDecoration(
+                            hintText: "Digite Seu Texto",
+                            hintStyle: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                            contentPadding: EdgeInsets.only(top: 7),
+                            prefixStyle: TextStyle(),
+                            border: InputBorder.none),
+                      ),
+                    ),
+                  ),
                   TextButton(
                     child: Text(
                       'Política de Privacidade',
                       style: TextStyle(color: ProjectColors().white),
                     ),
                     onPressed: () async {
-                      _loginPageController.abrirLink(
+                      _infoPageController.abrirLink(
                           'https://www.google.com.br/', context);
                     },
                   ),
