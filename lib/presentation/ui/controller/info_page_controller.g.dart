@@ -25,6 +25,22 @@ mixin _$InfoPageController on InfoPageControllerBase, Store {
     });
   }
 
+  late final _$editInfoControllerAtom =
+      Atom(name: 'InfoPageControllerBase.editInfoController', context: context);
+
+  @override
+  TextEditingController get editInfoController {
+    _$editInfoControllerAtom.reportRead();
+    return super.editInfoController;
+  }
+
+  @override
+  set editInfoController(TextEditingController value) {
+    _$editInfoControllerAtom.reportWrite(value, super.editInfoController, () {
+      super.editInfoController = value;
+    });
+  }
+
   late final _$infoListAtom =
       Atom(name: 'InfoPageControllerBase.infoList', context: context);
 
@@ -53,11 +69,11 @@ mixin _$InfoPageController on InfoPageControllerBase, Store {
       ActionController(name: 'InfoPageControllerBase', context: context);
 
   @override
-  dynamic removeItem(BuildContext context, int index) {
+  dynamic removeItem(BuildContext context, int index, SharedPreferences prefs) {
     final _$actionInfo = _$InfoPageControllerBaseActionController.startAction(
         name: 'InfoPageControllerBase.removeItem');
     try {
-      return super.removeItem(context, index);
+      return super.removeItem(context, index, prefs);
     } finally {
       _$InfoPageControllerBaseActionController.endAction(_$actionInfo);
     }
@@ -67,6 +83,7 @@ mixin _$InfoPageController on InfoPageControllerBase, Store {
   String toString() {
     return '''
 infoController: ${infoController},
+editInfoController: ${editInfoController},
 infoList: ${infoList}
     ''';
   }

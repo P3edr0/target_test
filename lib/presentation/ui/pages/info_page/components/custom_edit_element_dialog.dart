@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:target_test/presentation/ui/components/custom_alert_dialog.dart';
 import 'package:target_test/presentation/ui/components/login_button_component.dart';
 import 'package:target_test/presentation/ui/controller/info_page_controller.dart';
@@ -10,7 +13,7 @@ class CustomEditElementDialog {
     content: const Text('Item editado com sucesso.'),
   );
   Future<void> editDialog(BuildContext context, int index, String oldValue,
-      InfoPageController infoPageController) {
+      InfoPageController infoPageController, SharedPreferences prefs) {
     infoPageController.editInfoController.text = oldValue;
     String newValue = '';
     return showDialog<void>(
@@ -52,7 +55,9 @@ class CustomEditElementDialog {
                       textAlign: TextAlign.center,
                       onChanged: (value) => newValue = value,
                       controller: infoPageController.editInfoController,
-                      onFieldSubmitted: (value) {
+                      onFieldSubmitted: (value) async {
+                        String serializedList = "";
+
                         if (value == '') {
                           Navigator.of(context).pop();
 
@@ -63,6 +68,11 @@ class CustomEditElementDialog {
                               () => Navigator.of(context).pop());
                         } else {
                           infoPageController.infoList[index] = value;
+
+                          serializedList =
+                              json.encode(infoPageController.infoList);
+                          prefs.setString('targetList', serializedList);
+
                           Navigator.of(context).pop();
                         }
 
@@ -90,6 +100,8 @@ class CustomEditElementDialog {
           actions: <Widget>[
             LoginButtonComponent(
               callback: () {
+                String serializedList = "";
+
                 if (newValue == '') {
                   () => Navigator.of(context).pop();
 
@@ -100,11 +112,13 @@ class CustomEditElementDialog {
                       () => Navigator.of(context).pop());
                 } else {
                   infoPageController.infoList[index] = newValue;
+
+                  serializedList = json.encode(infoPageController.infoList);
+                  prefs.setString('targetList', serializedList);
                   Navigator.of(context).pop();
                   ScaffoldMessenger.of(context).showSnackBar(snackbar);
                 }
               },
-              //////////////////////////////
               label: 'Salvar',
               colorButton: ProjectColors().navyBlue,
             ),

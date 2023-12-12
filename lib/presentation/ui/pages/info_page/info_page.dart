@@ -1,7 +1,9 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:target_test/presentation/ui/components/custom_alert_dialog.dart';
 import 'package:target_test/presentation/ui/controller/info_page_controller.dart';
 import 'package:target_test/presentation/ui/pages/info_page/components/custom_edit_element_dialog.dart';
@@ -16,6 +18,29 @@ class InfoPage extends StatefulWidget {
 
 class _InfoPageState extends State<InfoPage> {
   final InfoPageController _infoPageController = InfoPageController();
+
+  SharedPreferences? prefs;
+  @override
+  void initState() {
+    super.initState();
+    carregarLista();
+  }
+
+  Future<void> carregarLista() async {
+    prefs = await SharedPreferences.getInstance();
+
+    String? listaSerializada = prefs!.getString('targetList');
+
+    if (listaSerializada != null) {
+      List<String> listaRecuperada =
+          List<String>.from(json.decode(listaSerializada));
+      _infoPageController.infoList.clear();
+
+      setState(() {
+        _infoPageController.infoList.addAll(listaRecuperada);
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -90,20 +115,22 @@ class _InfoPageState extends State<InfoPage> {
                                             context,
                                             index,
                                             _infoPageController.infoList[index],
-                                            _infoPageController);
+                                            _infoPageController,
+                                            prefs!);
                                       },
                                       child: const Icon(Icons.edit)),
                                   const SizedBox(
                                     width: 10,
                                   ),
                                   InkWell(
-                                      onTap: () {
-                                        CustomAlertDialog().alertdialog(
+                                      onTap: () async {
+                                        await CustomAlertDialog().alertdialog(
                                             context,
                                             'Deseja remover o elemento\n "${_infoPageController.infoList[index]}" ?',
                                             'Remover',
-                                            () => _infoPageController
-                                                .removeItem(context, index));
+                                            () =>
+                                                _infoPageController.removeItem(
+                                                    context, index, prefs!));
                                         log('Deletar $index');
                                       },
                                       child: Icon(
@@ -130,7 +157,7 @@ class _InfoPageState extends State<InfoPage> {
                         ),
                         textAlign: TextAlign.center,
                         controller: _infoPageController.infoController,
-                        onFieldSubmitted: (value) {
+                        onFieldSubmitted: (value) async {
                           if (value == '') {
                             CustomAlertDialog().alertdialog(
                                 context,
@@ -139,14 +166,21 @@ class _InfoPageState extends State<InfoPage> {
                                 () => Navigator.of(context).pop());
                           } else {
                             _infoPageController.infoList.insert(0, value);
+                            String serializedList =
+                                json.encode(_infoPageController.infoList);
 
-                            final snackbar = SnackBar(
-                              backgroundColor: ProjectColors().darkGreen,
-                              content: const Text('Item inserido com sucesso.'),
-                            );
-                            _infoPageController.infoController.clear();
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(snackbar);
+                            await prefs!
+                                .setString('targetList', serializedList)
+                                .whenComplete(() {
+                              final snackbar = SnackBar(
+                                backgroundColor: ProjectColors().darkGreen,
+                                content:
+                                    const Text('Item inserido com sucesso.'),
+                              );
+                              _infoPageController.infoController.clear();
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(snackbar);
+                            });
                           }
                         },
                         textInputAction: TextInputAction.done,
