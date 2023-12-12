@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
-import 'package:target_test/domain/usecases/login_usecases.dart';
+import 'package:target_test/domain/usecases/login_usecases/login_usecases.dart';
 import 'package:target_test/presentation/ui/components/custom_alert_dialog.dart';
 import 'package:target_test/presentation/ui/pages/info_page/info_page.dart';
 import 'package:target_test/utils/constants.dart';

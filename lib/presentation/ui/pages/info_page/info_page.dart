@@ -23,23 +23,24 @@ class _InfoPageState extends State<InfoPage> {
   @override
   void initState() {
     super.initState();
-    carregarLista();
+    // carregarLista();
+    _infoPageController.fetchList();
   }
 
   Future<void> carregarLista() async {
-    prefs = await SharedPreferences.getInstance();
+    // prefs = await SharedPreferences.getInstance();
 
-    String? listaSerializada = prefs!.getString('targetList');
+    // String? listaSerializada = prefs!.getString('targetList');
 
-    if (listaSerializada != null) {
-      List<String> listaRecuperada =
-          List<String>.from(json.decode(listaSerializada));
-      _infoPageController.infoList.clear();
+    // if (listaSerializada != null) {
+    //   List<String> listaRecuperada =
+    //       List<String>.from(json.decode(listaSerializada));
+    //   _infoPageController.infoList.clear();
 
-      setState(() {
-        _infoPageController.infoList.addAll(listaRecuperada);
-      });
-    }
+    // setState(() {
+    //   _infoPageController.infoList.addAll(listaRecuperada);
+    // });
+    // }
   }
 
   @override

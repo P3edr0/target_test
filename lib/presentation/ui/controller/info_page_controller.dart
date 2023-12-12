@@ -1,8 +1,10 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:target_test/domain/usecases/info_usecases/fetch_list_usecases.dart';
 import 'package:target_test/presentation/ui/components/custom_alert_dialog.dart';
 import 'package:target_test/utils/constants.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -45,6 +47,17 @@ abstract class InfoPageControllerBase with Store {
         () => Navigator.of(context).pop(),
       );
     }
+  }
+
+  @action
+  Future<void> fetchList() async {
+    var result = await FetchListUsecases().call('targetList');
+    result.fold((l) {
+      log(l.message);
+    }, (r) {
+      infoList.clear();
+      infoList.addAll(r);
+    });
   }
 
   @action
