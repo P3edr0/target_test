@@ -26,7 +26,7 @@ class CustomEditElementDialog {
             size: 50,
           ),
           content: SizedBox(
-            height: 60,
+            height: 70,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -35,11 +35,14 @@ class CustomEditElementDialog {
                   textAlign: TextAlign.center,
                 ),
                 Container(
+                  alignment: Alignment.center,
+                  margin: const EdgeInsets.only(top: 10),
                   padding: const EdgeInsets.symmetric(horizontal: 5),
                   width: 250,
-                  height: 30,
+                  height: 40,
                   decoration: BoxDecoration(
-                      color: ProjectColors().green,
+                      border:
+                          Border.all(color: ProjectColors().navyBlue, width: 2),
                       borderRadius: BorderRadius.circular(5)),
                   child: Form(
                     child: TextFormField(
@@ -67,7 +70,10 @@ class CustomEditElementDialog {
                       },
                       textInputAction: TextInputAction.done,
                       decoration: const InputDecoration(
-                          prefix: Icon(Icons.edit),
+                          // prefix: Icon(
+                          //   Icons.edit,
+                          //   color: ProjectColors().navyBlue,
+                          // ),
                           hintText: "Digite Seu Texto",
                           hintStyle: TextStyle(
                             fontWeight: FontWeight.bold,

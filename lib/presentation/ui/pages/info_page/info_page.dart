@@ -47,57 +47,72 @@ class _InfoPageState extends State<InfoPage> {
                         color: ProjectColors().white,
                         borderRadius: BorderRadius.circular(5)),
                     child: Observer(
-                      builder: (_) => ListView.separated(
-                        itemCount: _infoPageController.infoList.length,
-                        physics: const ClampingScrollPhysics(),
-                        separatorBuilder: (_, values) => Container(
-                          color: ProjectColors().darkGrey.withOpacity(0.5),
-                          width: 220,
-                          height: 1,
-                        ),
-                        itemBuilder: (context, index) => Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                                alignment: Alignment.center,
-                                width: 180,
-                                height: 50,
-                                child: Text(
-                                  _infoPageController.infoList[index],
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
+                      builder: (_) => _infoPageController.infoList.isEmpty
+                          ? Center(
+                              child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.info,
+                                  color: ProjectColors().navyBlue,
+                                  size: 30,
+                                ),
+                                const SizedBox(height: 10),
+                                const Text("Lista Vazia"),
+                              ],
+                            ))
+                          : ListView.separated(
+                              itemCount: _infoPageController.infoList.length,
+                              physics: const ClampingScrollPhysics(),
+                              separatorBuilder: (_, values) => Container(
+                                color:
+                                    ProjectColors().darkGrey.withOpacity(0.5),
+                                width: 220,
+                                height: 1,
+                              ),
+                              itemBuilder: (context, index) => Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                      alignment: Alignment.center,
+                                      width: 180,
+                                      height: 50,
+                                      child: Text(
+                                        _infoPageController.infoList[index],
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      )),
+                                  InkWell(
+                                      onTap: () {
+                                        CustomEditElementDialog().editDialog(
+                                            context,
+                                            index,
+                                            _infoPageController.infoList[index],
+                                            _infoPageController);
+                                      },
+                                      child: const Icon(Icons.edit)),
+                                  const SizedBox(
+                                    width: 10,
                                   ),
-                                  textAlign: TextAlign.center,
-                                )),
-                            InkWell(
-                                onTap: () {
-                                  CustomEditElementDialog().editDialog(
-                                      context,
-                                      index,
-                                      _infoPageController.infoList[index],
-                                      _infoPageController);
-                                },
-                                child: const Icon(Icons.edit)),
-                            const SizedBox(
-                              width: 10,
+                                  InkWell(
+                                      onTap: () {
+                                        CustomAlertDialog().alertdialog(
+                                            context,
+                                            'Deseja remover o elemento\n "${_infoPageController.infoList[index]}" ?',
+                                            'Remover',
+                                            () => _infoPageController
+                                                .removeItem(context, index));
+                                        log('Deletar $index');
+                                      },
+                                      child: Icon(
+                                        Icons.cancel_rounded,
+                                        color: ProjectColors().red,
+                                      ))
+                                ],
+                              ),
                             ),
-                            InkWell(
-                                onTap: () {
-                                  CustomAlertDialog().alertdialog(
-                                      context,
-                                      'Deseja remover o elemento\n "${_infoPageController.infoList[index]}" ?',
-                                      'Remover',
-                                      () => _infoPageController.removeItem(
-                                          context, index));
-                                  log('Deletar $index');
-                                },
-                                child: Icon(
-                                  Icons.cancel_rounded,
-                                  color: ProjectColors().red,
-                                ))
-                          ],
-                        ),
-                      ),
                     ),
                   ),
                   Container(
