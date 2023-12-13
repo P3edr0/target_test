@@ -1,9 +1,8 @@
-import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:target_test/domain/usecases/info_usecases/delete_item_list_usecase.dart';
 import 'package:target_test/domain/usecases/info_usecases/fetch_list_usecases.dart';
 import 'package:target_test/domain/usecases/info_usecases/insert_item_list_usecase.dart';
 import 'package:target_test/domain/usecases/info_usecases/update_item_list_usecase.dart';
@@ -67,7 +66,7 @@ abstract class InfoPageControllerBase with Store {
   @action
   Future<void> insertItem(String item, BuildContext context) async {
     var result =
-        await InsertItemListUsecase().call('targetList', item, infoList);
+        await InsertItemListUsecase().call('targetList', item, infoList, 0);
     result.fold((l) async {
       if (!context.mounted) return;
       await CustomAlertDialog().alertdialog(
@@ -117,39 +116,44 @@ abstract class InfoPageControllerBase with Store {
   }
 
   @action
-  removeItem(BuildContext context, int index, SharedPreferences prefs) {
-    String serializedList = "";
-
+  removeItem(BuildContext context, int index) async {
     String tempItem = infoList[index];
-    infoList.removeAt(index);
-    serializedList = json.encode(infoList);
-
-    prefs
-        .setString('targetList', serializedList)
+    var result = await DeleteItemListUsecase()
+        .call('targetList', index, infoList)
         .whenComplete(() => Navigator.of(context).pop());
+    result.fold((l) async {
+      if (!context.mounted) return;
+      await CustomAlertDialog().alertdialog(
+        context,
+        l.message,
+        'Sair',
+        () => Navigator.of(context).pop(),
+      );
+    }, (r) {
+      infoList.clear();
+      infoList.addAll(r);
+      final snackbar = SnackBar(
+        backgroundColor: ProjectColors().darkGreen,
+        content: const Text('Item deletado com sucesso.'),
+        action: SnackBarAction(
+          label: 'Desfazer',
+          onPressed: () async {
+            InsertItemListUsecase()
+                .call('targetList', tempItem, infoList, index)
+                .whenComplete(() {
+              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: const Text('O Item foi restaurado'),
+                  backgroundColor: ProjectColors().darkBlue,
+                ),
+              );
+            });
+          },
+        ),
+      );
 
-    final snackbar = SnackBar(
-      backgroundColor: ProjectColors().darkGreen,
-      content: const Text('Item deletado com sucesso.'),
-      action: SnackBarAction(
-        label: 'Desfazer',
-        onPressed: () async {
-          infoList.insert(index, tempItem);
-          serializedList = json.encode(infoList);
-
-          await prefs.setString('targetList', serializedList).whenComplete(() {
-            ScaffoldMessenger.of(context).hideCurrentSnackBar();
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: const Text('O Item foi restaurado'),
-                backgroundColor: ProjectColors().darkBlue,
-              ),
-            );
-          });
-        },
-      ),
-    );
-
-    ScaffoldMessenger.of(context).showSnackBar(snackbar);
+      ScaffoldMessenger.of(context).showSnackBar(snackbar);
+    });
   }
 }

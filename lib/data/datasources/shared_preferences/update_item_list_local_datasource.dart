@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:target_test/data/datasources/info_datasource.dart';
 import 'package:target_test/domain/usecases/info_usecases/info_usecase_exceptions.dart';
 
-class UpadateItemListLocalDatasource implements IUpdateItemListLocalDatasource {
+class UpdateItemListLocalDatasource implements IUpdateItemListLocalDatasource {
   @override
   Future<Either<IInfoUsecaseExceptions, String>> call(String repositoryName,
       String updatedItem, int index, List<String> list) async {

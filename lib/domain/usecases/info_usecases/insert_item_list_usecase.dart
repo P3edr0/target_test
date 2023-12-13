@@ -6,7 +6,7 @@ import 'package:target_test/domain/usecases/info_usecases/info_usecase_exception
 class InsertItemListUsecase implements IInsertItemListRepository {
   @override
   Future<Either<IInfoUsecaseExceptions, List<String>>> call(
-      String listName, String item, List<String> list) async {
+      String listName, String item, List<String> list, int index) async {
     if (listName == '') {
       return Left(EmptyFieldListCaseException());
     }
@@ -14,6 +14,6 @@ class InsertItemListUsecase implements IInsertItemListRepository {
       return Left(
           EmptyFieldListCaseException('O nome do item não pode ser vazio'));
     }
-    return InsertItemListRepositoryImpl().call(listName, item, list);
+    return InsertItemListRepositoryImpl().call(listName, item, list, index);
   }
 }

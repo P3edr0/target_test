@@ -11,10 +11,11 @@ abstract class IUpdateItemListRepository {
 }
 
 abstract class IDeleteItemListRepository {
-  Future<Either<IInfoUsecaseExceptions, String>> call(String list);
+  Future<Either<IInfoUsecaseExceptions, List<String>>> call(
+      String repositoryName, int index, List<String> list);
 }
 
 abstract class IInsertItemListRepository {
   Future<Either<IInfoUsecaseExceptions, List<String>>> call(
-      String listName, String item, List<String> list);
+      String listName, String item, List<String> list, int index);
 }

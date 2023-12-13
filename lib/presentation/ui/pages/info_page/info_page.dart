@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:target_test/presentation/ui/components/custom_alert_dialog.dart';
 import 'package:target_test/presentation/ui/controller/info_page_controller.dart';
 import 'package:target_test/presentation/ui/pages/info_page/components/custom_edit_element_dialog.dart';
@@ -18,7 +17,6 @@ class InfoPage extends StatefulWidget {
 class _InfoPageState extends State<InfoPage> {
   final InfoPageController _infoPageController = InfoPageController();
 
-  SharedPreferences? prefs;
   @override
   void initState() {
     super.initState();
@@ -112,9 +110,11 @@ class _InfoPageState extends State<InfoPage> {
                                             context,
                                             'Deseja remover o elemento\n "${_infoPageController.infoList[index]}" ?',
                                             'Remover',
-                                            () =>
+                                            () async =>
                                                 _infoPageController.removeItem(
-                                                    context, index, prefs!));
+                                                  context,
+                                                  index,
+                                                ));
                                         log('Deletar $index');
                                       },
                                       child: Icon(

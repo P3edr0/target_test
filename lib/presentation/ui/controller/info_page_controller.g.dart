@@ -81,18 +81,21 @@ mixin _$InfoPageController on InfoPageControllerBase, Store {
     return _$insertItemAsyncAction.run(() => super.insertItem(item, context));
   }
 
-  late final _$InfoPageControllerBaseActionController =
-      ActionController(name: 'InfoPageControllerBase', context: context);
+  late final _$updateItemAsyncAction =
+      AsyncAction('InfoPageControllerBase.updateItem', context: context);
 
   @override
-  dynamic removeItem(BuildContext context, int index, SharedPreferences prefs) {
-    final _$actionInfo = _$InfoPageControllerBaseActionController.startAction(
-        name: 'InfoPageControllerBase.removeItem');
-    try {
-      return super.removeItem(context, index, prefs);
-    } finally {
-      _$InfoPageControllerBaseActionController.endAction(_$actionInfo);
-    }
+  Future<void> updateItem(String updatedItem, int index, BuildContext context) {
+    return _$updateItemAsyncAction
+        .run(() => super.updateItem(updatedItem, index, context));
+  }
+
+  late final _$removeItemAsyncAction =
+      AsyncAction('InfoPageControllerBase.removeItem', context: context);
+
+  @override
+  Future removeItem(BuildContext context, int index) {
+    return _$removeItemAsyncAction.run(() => super.removeItem(context, index));
   }
 
   @override
