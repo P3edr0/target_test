@@ -12,3 +12,8 @@ abstract class IUpdateItemListRepository {
 abstract class IDeleteItemListRepository {
   Future<Either<IInfoUsecaseExceptions, String>> call(String list);
 }
+
+abstract class IInsertItemListRepository {
+  Future<Either<IInfoUsecaseExceptions, List<String>>> call(
+      String listName, String item, List<String> list);
+}

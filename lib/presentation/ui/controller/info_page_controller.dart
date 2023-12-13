@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:target_test/domain/usecases/info_usecases/fetch_list_usecases.dart';
+import 'package:target_test/domain/usecases/info_usecases/insert_item_list_usecase.dart';
 import 'package:target_test/presentation/ui/components/custom_alert_dialog.dart';
 import 'package:target_test/utils/constants.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -54,9 +55,36 @@ abstract class InfoPageControllerBase with Store {
     var result = await FetchListUsecases().call('targetList');
     result.fold((l) {
       log(l.message);
+
+      throw (l);
     }, (r) {
       infoList.clear();
       infoList.addAll(r);
+    });
+  }
+
+  @action
+  Future<void> insertItem(String item, BuildContext context) async {
+    var result =
+        await InsertItemListUsecase().call('targetList', item, infoList);
+    result.fold((l) async {
+      if (!context.mounted) return;
+      await CustomAlertDialog().alertdialog(
+        context,
+        l.message,
+        'Sair',
+        () => Navigator.of(context).pop(),
+      );
+    }, (r) {
+      infoList.clear();
+      infoList.addAll(r);
+      infoController.clear();
+
+      final snackbar = SnackBar(
+        backgroundColor: ProjectColors().darkGreen,
+        content: const Text('Item inserido com sucesso.'),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackbar);
     });
   }
 

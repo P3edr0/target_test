@@ -65,6 +65,22 @@ mixin _$InfoPageController on InfoPageControllerBase, Store {
     return _$abrirLinkAsyncAction.run(() => super.abrirLink(url, context));
   }
 
+  late final _$fetchListAsyncAction =
+      AsyncAction('InfoPageControllerBase.fetchList', context: context);
+
+  @override
+  Future<void> fetchList() {
+    return _$fetchListAsyncAction.run(() => super.fetchList());
+  }
+
+  late final _$insertItemAsyncAction =
+      AsyncAction('InfoPageControllerBase.insertItem', context: context);
+
+  @override
+  Future<void> insertItem(String item, BuildContext context) {
+    return _$insertItemAsyncAction.run(() => super.insertItem(item, context));
+  }
+
   late final _$InfoPageControllerBaseActionController =
       ActionController(name: 'InfoPageControllerBase', context: context);
 

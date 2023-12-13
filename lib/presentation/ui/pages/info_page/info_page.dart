@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -166,22 +165,7 @@ class _InfoPageState extends State<InfoPage> {
                                 'Sair',
                                 () => Navigator.of(context).pop());
                           } else {
-                            _infoPageController.infoList.insert(0, value);
-                            String serializedList =
-                                json.encode(_infoPageController.infoList);
-
-                            await prefs!
-                                .setString('targetList', serializedList)
-                                .whenComplete(() {
-                              final snackbar = SnackBar(
-                                backgroundColor: ProjectColors().darkGreen,
-                                content:
-                                    const Text('Item inserido com sucesso.'),
-                              );
-                              _infoPageController.infoController.clear();
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(snackbar);
-                            });
+                            _infoPageController.insertItem(value, context);
                           }
                         },
                         textInputAction: TextInputAction.done,

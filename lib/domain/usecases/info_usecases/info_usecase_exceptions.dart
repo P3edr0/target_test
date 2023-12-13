@@ -14,3 +14,9 @@ class NotFoundListCaseException extends IInfoUsecaseExceptions {
   NotFoundListCaseException([String message = "A lista não foi encontrada"])
       : super(message);
 }
+
+class EmptyFieldListCaseException extends IInfoUsecaseExceptions {
+  @override
+  EmptyFieldListCaseException([String message = "O nome da lista está vazio"])
+      : super(message);
+}
