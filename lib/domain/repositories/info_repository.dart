@@ -6,7 +6,8 @@ abstract class IFetchListRepository {
 }
 
 abstract class IUpdateItemListRepository {
-  Future<Either<IInfoUsecaseExceptions, String>> call(String list);
+  Future<Either<IInfoUsecaseExceptions, List<String>>> call(
+      String repositoryName, int index, String updatedItem, List<String> list);
 }
 
 abstract class IDeleteItemListRepository {

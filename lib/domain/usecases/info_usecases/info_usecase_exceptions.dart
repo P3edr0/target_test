@@ -20,3 +20,9 @@ class EmptyFieldListCaseException extends IInfoUsecaseExceptions {
   EmptyFieldListCaseException([String message = "O nome da lista está vazio"])
       : super(message);
 }
+
+class IndexListCaseException extends IInfoUsecaseExceptions {
+  @override
+  IndexListCaseException([String message = "O nome da lista está vazio"])
+      : super(message);
+}

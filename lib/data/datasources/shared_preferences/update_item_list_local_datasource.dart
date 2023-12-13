@@ -5,17 +5,17 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:target_test/data/datasources/info_datasource.dart';
 import 'package:target_test/domain/usecases/info_usecases/info_usecase_exceptions.dart';
 
-class InsertItemListLocalDatasource implements IInsertItemListLocalDatasource {
+class UpadateItemListLocalDatasource implements IUpdateItemListLocalDatasource {
   @override
-  Future<Either<IInfoUsecaseExceptions, String>> call(
-      String listName, String item, List<String> list) async {
+  Future<Either<IInfoUsecaseExceptions, String>> call(String repositoryName,
+      String updatedItem, int index, List<String> list) async {
     try {
       bool sucess = false;
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      list.insert(0, item);
+      list[index] = updatedItem;
       String serializedList = json.encode(list);
 
-      sucess = await prefs.setString(listName, serializedList);
+      sucess = await prefs.setString(repositoryName, serializedList);
       if (sucess) {
         return Right(serializedList);
       } else {

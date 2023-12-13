@@ -5,7 +5,7 @@ abstract class IFetchListDatasource {
   Future<Either<IInfoUsecaseExceptions, String>> call(String listName);
 }
 
-abstract class IInsertItemListDatasource {
+abstract class IInsertItemListLocalDatasource {
   Future<Either<IInfoUsecaseExceptions, String>> call(
       String listName, String item, List<String> list);
 }
@@ -15,7 +15,7 @@ abstract class IRemoveItemListDatasource {
       String listName, int index, List<String> list);
 }
 
-abstract class IUpdateItemListDatasource {
+abstract class IUpdateItemListLocalDatasource {
   Future<Either<IInfoUsecaseExceptions, String>> call(
-      String listName, String item, int index);
+      String listName, String newItem, int index, List<String> list);
 }

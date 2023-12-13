@@ -1,19 +1,12 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:target_test/presentation/ui/components/custom_alert_dialog.dart';
 import 'package:target_test/presentation/ui/components/login_button_component.dart';
 import 'package:target_test/presentation/ui/controller/info_page_controller.dart';
 import 'package:target_test/utils/constants.dart';
 
 class CustomEditElementDialog {
-  final snackbar = SnackBar(
-    backgroundColor: ProjectColors().darkGreen,
-    content: const Text('Item editado com sucesso.'),
-  );
   Future<void> editDialog(BuildContext context, int index, String oldValue,
-      InfoPageController infoPageController, SharedPreferences prefs) {
+      InfoPageController infoPageController) {
     infoPageController.editInfoController.text = oldValue;
     String newValue = '';
     return showDialog<void>(
@@ -56,34 +49,11 @@ class CustomEditElementDialog {
                       onChanged: (value) => newValue = value,
                       controller: infoPageController.editInfoController,
                       onFieldSubmitted: (value) async {
-                        String serializedList = "";
-
-                        if (value == '') {
-                          Navigator.of(context).pop();
-
-                          CustomAlertDialog().alertdialog(
-                              context,
-                              'O campo de texto não pode ser vazio',
-                              'Sair',
-                              () => Navigator.of(context).pop());
-                        } else {
-                          infoPageController.infoList[index] = value;
-
-                          serializedList =
-                              json.encode(infoPageController.infoList);
-                          prefs.setString('targetList', serializedList);
-
-                          Navigator.of(context).pop();
-                        }
-
-                        ScaffoldMessenger.of(context).showSnackBar(snackbar);
+                        await infoPageController.updateItem(
+                            value, index, context);
                       },
                       textInputAction: TextInputAction.done,
                       decoration: const InputDecoration(
-                          // prefix: Icon(
-                          //   Icons.edit,
-                          //   color: ProjectColors().navyBlue,
-                          // ),
                           hintText: "Digite Seu Texto",
                           hintStyle: TextStyle(
                             fontWeight: FontWeight.bold,
@@ -99,9 +69,7 @@ class CustomEditElementDialog {
           ),
           actions: <Widget>[
             LoginButtonComponent(
-              callback: () {
-                String serializedList = "";
-
+              callback: () async {
                 if (newValue == '') {
                   () => Navigator.of(context).pop();
 
@@ -111,12 +79,7 @@ class CustomEditElementDialog {
                       'Sair',
                       () => Navigator.of(context).pop());
                 } else {
-                  infoPageController.infoList[index] = newValue;
-
-                  serializedList = json.encode(infoPageController.infoList);
-                  prefs.setString('targetList', serializedList);
-                  Navigator.of(context).pop();
-                  ScaffoldMessenger.of(context).showSnackBar(snackbar);
+                  await infoPageController.updateItem(newValue, index, context);
                 }
               },
               label: 'Salvar',

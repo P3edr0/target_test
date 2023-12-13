@@ -6,6 +6,7 @@ import 'package:mobx/mobx.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:target_test/domain/usecases/info_usecases/fetch_list_usecases.dart';
 import 'package:target_test/domain/usecases/info_usecases/insert_item_list_usecase.dart';
+import 'package:target_test/domain/usecases/info_usecases/update_item_list_usecase.dart';
 import 'package:target_test/presentation/ui/components/custom_alert_dialog.dart';
 import 'package:target_test/utils/constants.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -84,6 +85,33 @@ abstract class InfoPageControllerBase with Store {
         backgroundColor: ProjectColors().darkGreen,
         content: const Text('Item inserido com sucesso.'),
       );
+      ScaffoldMessenger.of(context).showSnackBar(snackbar);
+    });
+  }
+
+  @action
+  Future<void> updateItem(
+      String updatedItem, int index, BuildContext context) async {
+    var result = await UpdateItemListUsecase()
+        .call('targetList', index, updatedItem, infoList);
+    result.fold((l) async {
+      if (!context.mounted) return;
+      await CustomAlertDialog().alertdialog(
+        context,
+        l.message,
+        'Sair',
+        () => Navigator.of(context).pop(),
+      );
+    }, (r) {
+      infoList.clear();
+      infoList.addAll(r);
+
+      final snackbar = SnackBar(
+        backgroundColor: ProjectColors().darkGreen,
+        content: const Text('Item editado com sucesso.'),
+      );
+      Navigator.of(context).pop();
+
       ScaffoldMessenger.of(context).showSnackBar(snackbar);
     });
   }

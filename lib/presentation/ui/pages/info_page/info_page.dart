@@ -26,22 +26,6 @@ class _InfoPageState extends State<InfoPage> {
     _infoPageController.fetchList();
   }
 
-  Future<void> carregarLista() async {
-    // prefs = await SharedPreferences.getInstance();
-
-    // String? listaSerializada = prefs!.getString('targetList');
-
-    // if (listaSerializada != null) {
-    //   List<String> listaRecuperada =
-    //       List<String>.from(json.decode(listaSerializada));
-    //   _infoPageController.infoList.clear();
-
-    // setState(() {
-    //   _infoPageController.infoList.addAll(listaRecuperada);
-    // });
-    // }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -112,11 +96,11 @@ class _InfoPageState extends State<InfoPage> {
                                   InkWell(
                                       onTap: () {
                                         CustomEditElementDialog().editDialog(
-                                            context,
-                                            index,
-                                            _infoPageController.infoList[index],
-                                            _infoPageController,
-                                            prefs!);
+                                          context,
+                                          index,
+                                          _infoPageController.infoList[index],
+                                          _infoPageController,
+                                        );
                                       },
                                       child: const Icon(Icons.edit)),
                                   const SizedBox(
@@ -158,15 +142,7 @@ class _InfoPageState extends State<InfoPage> {
                         textAlign: TextAlign.center,
                         controller: _infoPageController.infoController,
                         onFieldSubmitted: (value) async {
-                          if (value == '') {
-                            CustomAlertDialog().alertdialog(
-                                context,
-                                'O campo de texto não pode ser vazio',
-                                'Sair',
-                                () => Navigator.of(context).pop());
-                          } else {
-                            _infoPageController.insertItem(value, context);
-                          }
+                          _infoPageController.insertItem(value, context);
                         },
                         textInputAction: TextInputAction.done,
                         decoration: const InputDecoration(
