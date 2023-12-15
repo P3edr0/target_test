@@ -8,14 +8,14 @@ import 'package:target_test/domain/usecases/info_usecases/info_usecase_exception
 class InsertItemListLocalDatasource implements IInsertItemListLocalDatasource {
   @override
   Future<Either<IInfoUsecaseExceptions, String>> call(
-      String listName, String item, List<String> list, int index) async {
+      String repositoryName, String item, List<String> list, int index) async {
     try {
       bool sucess = false;
       SharedPreferences prefs = await SharedPreferences.getInstance();
       list.insert(index, item);
       String serializedList = json.encode(list);
 
-      sucess = await prefs.setString(listName, serializedList);
+      sucess = await prefs.setString(repositoryName, serializedList);
       if (sucess) {
         return Right(serializedList);
       } else {

@@ -8,10 +8,10 @@ import 'package:target_test/domain/usecases/info_usecases/info_usecase_exception
 class InsertItemListRepositoryImpl implements IInsertItemListRepository {
   @override
   Future<Either<IInfoUsecaseExceptions, List<String>>> call(
-      String listName, String item, List<String> list, int index) async {
+      String repositoryName, String item, List<String> list, int index) async {
     try {
       var result = await InsertItemListLocalDatasource()
-          .call(listName, item, list, index);
+          .call(repositoryName, item, list, index);
       return result.fold((l) {
         return Left(l);
       }, (serializedList) {

@@ -17,5 +17,5 @@ abstract class IDeleteItemListRepository {
 
 abstract class IInsertItemListRepository {
   Future<Either<IInfoUsecaseExceptions, List<String>>> call(
-      String listName, String item, List<String> list, int index);
+      String repositoryName, String item, List<String> list, int index);
 }

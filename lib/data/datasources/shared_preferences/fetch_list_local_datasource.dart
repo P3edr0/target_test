@@ -5,11 +5,12 @@ import 'package:target_test/domain/usecases/info_usecases/info_usecase_exception
 
 class FetchListLocalDatasourceImpl implements IFetchListDatasource {
   @override
-  Future<Either<IInfoUsecaseExceptions, String>> call(String listName) async {
+  Future<Either<IInfoUsecaseExceptions, String>> call(
+      String repositoryName) async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
 
-      String? serializedList = prefs.getString(listName);
+      String? serializedList = prefs.getString(repositoryName);
       return Right(serializedList!);
     } catch (e) {
       return Left(NullListCaseException());

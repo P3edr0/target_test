@@ -8,8 +8,8 @@ import 'package:target_test/domain/usecases/info_usecases/info_usecase_exception
 class FetchListRepositoryImpl implements IFetchListRepository {
   @override
   Future<Either<IInfoUsecaseExceptions, List<String>>> call(
-      String listName) async {
-    var result = await FetchListLocalDatasourceImpl().call(listName);
+      String repositoryName) async {
+    var result = await FetchListLocalDatasourceImpl().call(repositoryName);
     return result.fold((l) {
       return Left(l);
     }, (serializedList) {

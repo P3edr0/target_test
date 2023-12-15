@@ -6,7 +6,11 @@ import 'package:target_test/domain/usecases/info_usecases/info_usecase_exception
 class FetchListUsecases implements IFetchListRepository {
   @override
   Future<Either<IInfoUsecaseExceptions, List<String>>> call(
-      String listName) async {
-    return FetchListRepositoryImpl().call(listName);
+      String repositoryName) async {
+    if (repositoryName == '') {
+      return Left(
+          EmptyFieldListCaseException('O nome do item não pode ser vazio'));
+    }
+    return FetchListRepositoryImpl().call(repositoryName);
   }
 }

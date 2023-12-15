@@ -23,6 +23,6 @@ class EmptyFieldListCaseException extends IInfoUsecaseExceptions {
 
 class IndexListCaseException extends IInfoUsecaseExceptions {
   @override
-  IndexListCaseException([String message = "O nome da lista está vazio"])
+  IndexListCaseException([String message = "O elemento não existe na lista"])
       : super(message);
 }
