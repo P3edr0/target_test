@@ -1,18 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
-import 'package:target_test/domain/usecases/login_usecases.dart';
-import 'package:target_test/presentation/ui/pages/home_page/components/custom_alert_dialog.dart';
+import 'package:target_test/domain/usecases/login_usecases/login_usecases.dart';
+import 'package:target_test/presentation/ui/components/custom_alert_dialog.dart';
 import 'package:target_test/presentation/ui/pages/info_page/info_page.dart';
 import 'package:target_test/utils/constants.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
-// Include generated file
 part 'login_page_controller.g.dart';
 
-// This is the class used by rest of your codebase
 class LoginPageController = LoginPageControllerBase with _$LoginPageController;
 
-// The store-class
 abstract class LoginPageControllerBase with Store {
   LoginPageControllerBase();
 
@@ -28,7 +25,12 @@ abstract class LoginPageControllerBase with Store {
         LoginUseCase().call(userController.text, passwordController.text);
     response.fold(
       (l) async {
-        await CustomAlertDialog().alertdialog(context, l.message);
+        await CustomAlertDialog().alertdialog(
+          context,
+          l.message,
+          'Sair',
+          () => Navigator.of(context).pop(),
+        );
       },
       (r) async {
         if (r == acessToken) {
@@ -37,8 +39,12 @@ abstract class LoginPageControllerBase with Store {
             MaterialPageRoute(builder: (context) => const InfoPage()),
           );
         } else {
-          await CustomAlertDialog()
-              .alertdialog(context, 'Credenciais Inválidas');
+          await CustomAlertDialog().alertdialog(
+            context,
+            'Credenciais Inválidas',
+            'Sair',
+            () => Navigator.of(context).pop(),
+          );
         }
       },
     );
@@ -51,12 +57,21 @@ abstract class LoginPageControllerBase with Store {
         await launchUrlString(url);
       } else {
         if (!context.mounted) return;
-        await CustomAlertDialog()
-            .alertdialog(context, 'Não foi possível abrir o link: $url');
+        await CustomAlertDialog().alertdialog(
+          context,
+          'Não foi possível abrir o link: $url',
+          'Sair',
+          () => Navigator.of(context).pop(),
+        );
       }
     } else {
       if (!context.mounted) return;
-      await CustomAlertDialog().alertdialog(context, 'URL inválida: $url');
+      await CustomAlertDialog().alertdialog(
+        context,
+        'URL inválida: $url',
+        'Sair',
+        () => Navigator.of(context).pop(),
+      );
     }
   }
 }

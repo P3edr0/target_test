@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:target_test/presentation/ui/components/login_button_component.dart';
 import 'package:target_test/presentation/ui/controller/login_page_controller.dart';
-import 'package:target_test/presentation/ui/pages/home_page/components/login_button_component.dart';
 import 'package:target_test/presentation/ui/pages/home_page/components/login_textform_component.dart';
 import 'package:target_test/utils/constants.dart';
 
