@@ -2,6 +2,10 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
+import 'package:target_test/data/datasources/shared_preferences/delete_item_list_shared_datasource.dart';
+import 'package:target_test/data/datasources/shared_preferences/fetch_list_shared_datasource.dart';
+import 'package:target_test/data/datasources/shared_preferences/insert_item_list_shared_datasource.dart';
+import 'package:target_test/data/datasources/shared_preferences/update_item_list_shared_datasource.dart';
 import 'package:target_test/domain/usecases/info_usecases/delete_item_list_usecase.dart';
 import 'package:target_test/domain/usecases/info_usecases/fetch_list_usecases.dart';
 import 'package:target_test/domain/usecases/info_usecases/insert_item_list_usecase.dart';
@@ -52,7 +56,8 @@ abstract class InfoPageControllerBase with Store {
 
   @action
   Future<void> fetchList() async {
-    var result = await FetchListUsecases().call('targetList');
+    var result =
+        await FetchListUsecases().call(FetchListSharedDatasourceImpl());
     result.fold((l) {
       log(l.message);
 
@@ -65,8 +70,8 @@ abstract class InfoPageControllerBase with Store {
 
   @action
   Future<void> insertItem(String item, BuildContext context) async {
-    var result =
-        await InsertItemListUsecase().call('targetList', item, infoList, 0);
+    var result = await InsertItemListUsecase()
+        .call(InsertItemListSharedDatasourceImpl(), item, infoList, 0);
     result.fold((l) async {
       if (!context.mounted) return;
       await CustomAlertDialog().alertdialog(
@@ -91,8 +96,8 @@ abstract class InfoPageControllerBase with Store {
   @action
   Future<void> updateItem(
       String updatedItem, int index, BuildContext context) async {
-    var result = await UpdateItemListUsecase()
-        .call('targetList', index, updatedItem, infoList);
+    var result = await UpdateItemListUsecase().call(
+        UpdateItemListSharedDatasourceImpl(), index, updatedItem, infoList);
     result.fold((l) async {
       if (!context.mounted) return;
       await CustomAlertDialog().alertdialog(
@@ -116,10 +121,10 @@ abstract class InfoPageControllerBase with Store {
   }
 
   @action
-  removeItem(BuildContext context, int index) async {
+  deleteItem(BuildContext context, int index) async {
     String tempItem = infoList[index];
     var result = await DeleteItemListUsecase()
-        .call('targetList', index, infoList)
+        .call(DeleteItemListSharedDatasourceImpl(), index, infoList)
         .whenComplete(() => Navigator.of(context).pop());
     result.fold((l) async {
       if (!context.mounted) return;
@@ -139,7 +144,8 @@ abstract class InfoPageControllerBase with Store {
           label: 'Desfazer',
           onPressed: () async {
             InsertItemListUsecase()
-                .call('targetList', tempItem, infoList, index)
+                .call(InsertItemListSharedDatasourceImpl(), tempItem, infoList,
+                    index)
                 .whenComplete(() {
               ScaffoldMessenger.of(context).hideCurrentSnackBar();
               ScaffoldMessenger.of(context).showSnackBar(

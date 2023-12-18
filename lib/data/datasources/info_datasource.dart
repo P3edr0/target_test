@@ -2,20 +2,23 @@ import 'package:dartz/dartz.dart';
 import 'package:target_test/domain/usecases/info_usecases/info_usecase_exceptions.dart';
 
 abstract class IFetchListDatasource {
-  Future<Either<IInfoUsecaseExceptions, String>> call(String repositoryName);
+  Future<Either<IInfoUsecaseExceptions, String>> call();
 }
 
-abstract class IInsertItemListLocalDatasource {
+abstract class IInsertItemListDatasource {
   Future<Either<IInfoUsecaseExceptions, String>> call(
-      String repositoryName, String item, List<String> list, int index);
+      String item, List<String> list, int index);
 }
 
-abstract class IDeleteItemListLocalDatasource {
+abstract class IDeleteItemListDatasource {
   Future<Either<IInfoUsecaseExceptions, String>> call(
-      String repositoryName, int index, List<String> list);
+      int index, List<String> list);
 }
 
-abstract class IUpdateItemListLocalDatasource {
+abstract class IUpdateItemListDatasource {
   Future<Either<IInfoUsecaseExceptions, String>> call(
-      String repositoryName, String newItem, int index, List<String> list);
+      IUpdateItemListDatasource iUpdateItemListDatasource,
+      int index,
+      String updatedItem,
+      List<String> list);
 }

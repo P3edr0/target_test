@@ -111,7 +111,7 @@ class _InfoPageState extends State<InfoPage> {
                                             'Deseja remover o elemento\n "${_infoPageController.infoList[index]}" ?',
                                             'Remover',
                                             () async =>
-                                                _infoPageController.removeItem(
+                                                _infoPageController.deleteItem(
                                                   context,
                                                   index,
                                                 ));

@@ -90,12 +90,12 @@ mixin _$InfoPageController on InfoPageControllerBase, Store {
         .run(() => super.updateItem(updatedItem, index, context));
   }
 
-  late final _$removeItemAsyncAction =
-      AsyncAction('InfoPageControllerBase.removeItem', context: context);
+  late final _$deleteItemAsyncAction =
+      AsyncAction('InfoPageControllerBase.deleteItem', context: context);
 
   @override
-  Future removeItem(BuildContext context, int index) {
-    return _$removeItemAsyncAction.run(() => super.removeItem(context, index));
+  Future deleteItem(BuildContext context, int index) {
+    return _$deleteItemAsyncAction.run(() => super.deleteItem(context, index));
   }
 
   @override
